@@ -1,24 +1,43 @@
+document.getElementById('error-message').style.display = 'none';
+
 const searchPhone = () =>{
     const searchField = document.getElementById('search-field');
     const searchText = searchField.value;
-    // clear data
+    // clear search filed data
     searchField.value = '';
-    const url = `https://openapi.programming-hero.com/api/phones?search=${searchText}`;
+    document.getElementById('error-message').style.display = 'none';
+    // empty search field error message
+    if (searchText == '') {
+        document.getElementById('error-message').style.display = 'block';
+    }else{
+        const url = `https://openapi.programming-hero.com/api/phones?search=${searchText}`;
     fetch (url)
     .then(res => res.json())
     .then(data => displaySearchResult(data.data))
+    .catch(error => displayError(error));
+    }
+    
 }
 
-// searchPhone();
+// error handle
+const displayError = error => {
+    document.getElementById('error-message').style.display = 'block';
+}
 
+// display phone Search Result
 const displaySearchResult = allphones =>{
+    // display 20 result
     const phones  = allphones.slice(0, 20);
     const searchResult = document.getElementById('search-result');
+    // clear previous search result
     searchResult.textContent = '';
+    // phone not found message
+    if(phones == 0){
+        document.getElementById('error-message').style.display = 'block';
+    }
     phones.forEach(phone => {
-        // console.log(phone);
         const div = document.createElement('div');
-        div.classList.add('col');
+        div.classList.add('col-lg-4');
         div.innerHTML = `
         <div class="card h-100">
             <div class="card-body">
@@ -27,6 +46,7 @@ const displaySearchResult = allphones =>{
             <h5 class="card-title">Brand: ${phone.brand}</h5>
             <h5 class="card-title">Phone: ${phone.phone_name}</h5>
             <button onclick="loadPhoneDetail('${phone.slug}')" type="button" class="btn btn-primary">Detailes</button>
+
             </div>
             </div>
         </div>
@@ -34,11 +54,11 @@ const displaySearchResult = allphones =>{
         searchResult.appendChild(div);
         
     })
+    
 }
 
-
+// load phone details
 const loadPhoneDetail = id =>{
-    // console.log(id)
     const url = `https://openapi.programming-hero.com/api/phone/${id}`
     console.log(url);
     fetch(url)
@@ -46,23 +66,22 @@ const loadPhoneDetail = id =>{
     .then (data => displayPhoneDetail(data.data))
 }
 
-// loadPhoneDetail();
-
+// display Phone Detail
 const displayPhoneDetail = phone =>{
     const phoneDetails = document.getElementById('phone-details');
     const div = document.createElement('div');
     div.classList.add('card');
     div.innerHTML = `
-    <img src="${phone.image}" class="card-img-top img-fluid" alt="...">
+    <img src="${phone?.image}" class="card-img-top img-fluid" alt="...">
     <div class="card-body">
-    <h5 class="card-title">Phone: ${phone.name}</h5>
+    <h5 class="card-title">Phone: ${phone?.name}</h5>
     <h5 class="card-title">Release Date: ${phone.releaseDate === ""? "Not found" : phone.releaseDate}</h5>
         <h4 class="card-title mt-3">Main Features</h4>
-        <h5 class="card-title">ChipSet: ${phone.mainFeatures.chipSet}</h5>
-        <h5 class="card-title">DisplaySize: ${phone.mainFeatures.displaySize}</h5> 
+        <h5 class="card-title">ChipSet: ${phone?.mainFeatures.chipSet}</h5>
+        <h5 class="card-title">DisplaySize: ${phone?.mainFeatures.displaySize}</h5> 
         <h5 class="card-title">Sensors: ${phone.mainFeatures?phone.mainFeatures.sensors: "Not Found"}</h5>
-        <h5 class="card-title">Memory: ${phone.mainFeatures.memory}</h5> 
-        <h5 class="card-title">Storage: ${phone.mainFeatures.storage}</h5>
+        <h5 class="card-title">Memory: ${phone?.mainFeatures.memory}</h5> 
+        <h5 class="card-title">Storage: ${phone?.mainFeatures.storage}</h5>
         <h4 class="card-title mt-3">Others Info</h4>
         <h5 class="card-title">Bluetooth: ${phone.others?phone.others.Bluetooth: "Not found"}</h5> 
         <h5 class="card-title">GPS: ${phone.others? phone.others.GPS: "Not found"}</h5> 
