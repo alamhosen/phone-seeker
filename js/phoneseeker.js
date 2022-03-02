@@ -43,9 +43,9 @@ const displaySearchResult = allphones =>{
             <div class="card-body">
             <img src="${phone.image}" class="card-img-top img-fluid" alt="img">
             <div class="text-center mt-3">
-            <h5 class="card-title">Brand: ${phone.brand}</h5>
             <h5 class="card-title">Phone: ${phone.phone_name}</h5>
-            <button onclick="loadPhoneDetail('${phone.slug}')" type="button" class="btn btn-primary">Detailes</button>
+            <h5 class="card-title">Brand: ${phone.brand}</h5>
+            <button onclick="loadPhoneDetail('${phone.slug}')" type="button" class="btn btn-primary px-5">Show Details</button>
 
             </div>
             </div>
@@ -69,12 +69,13 @@ const loadPhoneDetail = id =>{
 // display Phone Detail
 const displayPhoneDetail = phone =>{
     const phoneDetails = document.getElementById('phone-details');
+    phoneDetails.textContent = '';
     const div = document.createElement('div');
     div.classList.add('card');
     div.innerHTML = `
-    <img src="${phone?.image}" class="card-img-top img-fluid" alt="...">
+    <img src="${phone?.image}" class="card-img-top img-fluid" alt="img">
     <div class="card-body">
-    <h5 class="card-title">Phone: ${phone?.name}</h5>
+    <h3 class="card-title"> ${phone?.name}</h3>
     <h5 class="card-title">Release Date: ${phone.releaseDate === ""? "Not found" : phone.releaseDate}</h5>
         <h4 class="card-title mt-3">Main Features</h4>
         <h5 class="card-title">ChipSet: ${phone?.mainFeatures.chipSet}</h5>
@@ -91,5 +92,6 @@ const displayPhoneDetail = phone =>{
         <h5 class="card-title">WLAN: ${phone.others?phone.others.WLAN: "Not found"}</h5>
     </div>
     `;
+    
     phoneDetails.appendChild(div);
 }
