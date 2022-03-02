@@ -60,7 +60,6 @@ const displaySearchResult = allphones =>{
 // load phone details
 const loadPhoneDetail = id =>{
     const url = `https://openapi.programming-hero.com/api/phone/${id}`
-    console.log(url);
     fetch(url)
     .then (res => res.json())
     .then (data => displayPhoneDetail(data.data))
@@ -73,10 +72,10 @@ const displayPhoneDetail = phone =>{
     const div = document.createElement('div');
     div.classList.add('card');
     div.innerHTML = `
-    <img src="${phone?.image}" class="card-img-top img-fluid" alt="img">
+    <img src="${phone?.image}" class="card-img-top w-75 mx-auto mt-2" alt="img">
     <div class="card-body">
     <h3 class="card-title"> ${phone?.name}</h3>
-    <h5 class="card-title">Release Date: ${phone.releaseDate === ""? "Not found" : phone.releaseDate}</h5>
+        <h5 class="card-title">Release Date: ${phone.releaseDate === ""? "Not found" : phone.releaseDate}</h5>
         <h4 class="card-title mt-3">Main Features</h4>
         <h5 class="card-title">ChipSet: ${phone?.mainFeatures.chipSet}</h5>
         <h5 class="card-title">DisplaySize: ${phone?.mainFeatures.displaySize}</h5> 
